@@ -1,0 +1,1 @@
+var COEF_AT = 0.3;

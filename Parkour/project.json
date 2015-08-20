@@ -1,0 +1,21 @@
+{
+    "debugMode" : 1,
+    "noCache": false,
+    "showFPS" : false,
+    "frameRate" : 30,
+    "id" : "gameCanvas",
+    "renderMode" : 0,
+    "engineDir":"../",
+
+    "modules" : ["cocos2d","chipmunk"],
+
+    "jsList" : [
+        "src/resource.js",
+        "src/MenuLayer.js",
+        "src/AnimationLayer.js",
+        "src/BackgroundLayer.js",
+        "src/PlayScene.js",
+        "src/StatusLayer.js",
+        "src/globals.js"
+    ]
+}

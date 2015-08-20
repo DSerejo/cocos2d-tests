@@ -1,0 +1,22 @@
+{
+    "debugMode" : 1,
+    "noCache": false,
+    "showFPS" : true,
+    "frameRate" : 60,
+    "id" : "gameCanvas",
+    "renderMode" : 0,
+    "engineDir":"../",
+
+    "modules" : ["cocos2d","chipmunk"],
+
+    "jsList" : [
+        "src/resource.js",
+        "src/globals.js",
+        "src/Dot.js",
+        "src/Hero.js",
+        "src/Enemy.js",
+        "src/AnimationLayer.js",
+        "src/BackGroundLayer.js"
+
+    ]
+}
