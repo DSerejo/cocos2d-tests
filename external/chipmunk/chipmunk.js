@@ -3288,7 +3288,7 @@ var circle2segment = function(circleShape, segmentShape)
 		return NONE;
 	}
 }
-
+	
 // Find the minimum separating axis for the given poly and axis list.
 //
 // This function needs to return two values - the index of the min. separating axis and
