@@ -2,6 +2,10 @@ var s_HelloWorld = "HelloWorld.jpg";
 var s_CloseNormal = "CloseNormal.png";
 var s_CloseSelected = "CloseSelected.png";
 var s_dot = "wheel.png";
+var s_joint = "joint.png";
+var s_block = "block.png";
+var s_menu_stop = "red-button-hi.png";
+var s_menu_play = "red-button-hi.png";
 var s_enemy = "enemy.png";
 
 var g_resources = [
@@ -11,6 +15,9 @@ var g_resources = [
     s_CloseSelected,
     s_dot,
     s_enemy,
+    s_joint,
+    s_block,
+    s_menu_stop,
 
     //plist
 

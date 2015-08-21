@@ -6,8 +6,7 @@ var PlayScene = cc.Scene.extend({
         // Gravity
         this.space.gravity = cp.v(0, -350);
 
-        this.space.addCollisionHandler(SpriteTag.hero, 1,
-            this.collisionRockBegin.bind(this), function(){return true;}, function(){return true;}, function(){return true;});
+
     },
     collisionRockBegin:function(arbiter, space){
         cc.log(arbiter);

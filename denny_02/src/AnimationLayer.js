@@ -9,21 +9,29 @@ var AnimationLayer = cc.Layer.extend({
         this._debugNode = new cc.PhysicsDebugNode(this.space);
         this.addChild(this._debugNode, 10);
     },
+
     init:function () {
 
         this._super();
         var size = cc.director.getWinSize();
-        this.hero = new Hero(this.space,cc.p(size.width / 3, 70));
+        this.hero = new Hero(this.space,cc.p(size.width / 2, 70));
         this.addChild(this.hero.sprite);
         this.objects.push(this.hero);
 
-        var rock = new Rock(this.space,cc.p(size.width * 3 / 4, 95));
+        var rock = new Rock(this.space,cc.p(size.width /2 + 20, 70),60,60);
         this.addChild(rock.sprite);
         this.objects.push(rock);
 
         var constraint = new cp.PinJoint(this.hero.body,rock.body,cp.vzero,cp.vzero);
         this.space.addConstraint(constraint);
 
+
+        var rod = new Rod(this.space,cc.p(size.width /2 + 30, 70),60,60);
+        this.addChild(rod.sprite);
+        this.objects.push(rod);
+
+        rock.shape.setCollisionGroup(1);
+        this.hero.shape.setCollisionGroup(1);
 
 
         cc.eventManager.addListener({

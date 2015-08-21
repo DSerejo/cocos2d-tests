@@ -882,6 +882,7 @@ Shape.prototype.setFriction = function(u) { this.body.activate(); this.u = u; };
 Shape.prototype.setLayers = function(layers) { this.body.activate(); this.layers = layers; };
 Shape.prototype.setSensor = function(sensor) { this.body.activate(); this.sensor = sensor; };
 Shape.prototype.setCollisionType = function(collision_type) { this.body.activate(); this.collision_type = collision_type; };
+Shape.prototype.setCollisionGroup = function(group) { this.body.activate(); this.group = group; };
 Shape.prototype.getBody = function() { return this.body; };
 
 Shape.prototype.active = function()
@@ -3288,7 +3289,7 @@ var circle2segment = function(circleShape, segmentShape)
 		return NONE;
 	}
 }
-	
+
 // Find the minimum separating axis for the given poly and axis list.
 //
 // This function needs to return two values - the index of the min. separating axis and
