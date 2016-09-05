@@ -1,0 +1,31 @@
+{
+    "debugMode" : 1,
+    "noCache": false,
+    "showFPS" : true,
+    "frameRate" : 60,
+    "id" : "gameCanvas",
+    "renderMode" : 0,
+    "engineDir":"../",
+
+    "modules" : ["cocos2d","chipmunk"],
+
+    "jsList" : [
+        "src/EditFrameSprite.js",
+        "src/resource.js",
+        "src/globals.js",
+        "src/utils.js",
+        "src/hero.js",
+        "src/objects/rock.js",
+        "src/objects/rod.js",
+        "src/objects/motor.js",
+        "src/objects/wheel.js",
+        "src/objects/transmission.js",
+        "src/PlayScene.js",
+        "src/AnimationLayer.js",
+        "src/BackGroundLayer.js",
+        "src/ToolsLayer.js",
+        "src/EditLayer.js"
+
+
+    ]
+}

@@ -1,0 +1,26 @@
+{
+    "debugMode" : 1,
+    "noCache": false,
+    "showFPS" : true,
+    "frameRate" : 60,
+    "id" : "gameCanvas",
+    "renderMode" : 0,
+    "engineDir":"../../",
+
+    "modules" : ["cocos2d"],
+
+    "jsList" : [
+        "lib/lodash.js",
+        "src/resource.js",
+        "src/Editor/Util/Math.js",
+        "src/Editor/Util/Manager.js",
+        "src/Editor/Util/ControlPoint.js",
+        "src/Editor/Util/ControlRotation.js",
+        "src/Editor/Util/ControlScale.js",
+        "src/Editor/Util/ControlsRect.js",
+        "src/Editor/Util/Object.js",
+        "src/Editor/Nav.js",
+        "src/Editor/Scene.js"
+
+    ]
+}
