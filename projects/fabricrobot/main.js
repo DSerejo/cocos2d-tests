@@ -16,6 +16,7 @@ cc.game.onStart = function(){
     //load resources
     cc.LoaderScene.preload(g_resources, function () {
         cc.director.runScene(new EditorScene());
+        cc.debugger_ = new DebugCanvas(cc._canvas);
     }, this);
 };
 cc.game.run();

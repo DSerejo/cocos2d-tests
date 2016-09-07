@@ -1,0 +1,12 @@
+var b2Vec2 = Box2D.Common.Math.b2Vec2
+    , b2BodyDef = Box2D.Dynamics.b2BodyDef
+    , b2Body = Box2D.Dynamics.b2Body
+    , b2FixtureDef = Box2D.Dynamics.b2FixtureDef
+    , b2World = Box2D.Dynamics.b2World
+    , b2PolygonShape = Box2D.Collision.Shapes.b2PolygonShape
+    , b2EdgeShape = Box2D.Collision.Shapes.b2EdgeShape
+    , b2CircleShape = Box2D.Collision.Shapes.b2CircleShape
+    , b2_staticBody = Box2D.Dynamics.b2Body.b2_staticBody
+    , b2_dynamicBody = Box2D.Dynamics.b2Body.b2_dynamicBody
+    , b2DebugDraw = Box2D.Dynamics.b2DebugDraw,
+    PMR = 30

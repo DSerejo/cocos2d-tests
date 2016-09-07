@@ -7,11 +7,17 @@
     "renderMode" : 0,
     "engineDir":"../../",
 
-    "modules" : ["cocos2d"],
+    "modules" : ["cocos2d","box2d"],
 
     "jsList" : [
         "lib/lodash.js",
         "src/resource.js",
+        "src/Globals.js",
+        "src/DebugCanvas.js",
+        "src/Physics/Object.js",
+        "src/Physics/BoxBody.js",
+        "src/Physics/CircleBody.js",
+        "src/Physics/PolygonBody.js",
         "src/Editor/Util/Math.js",
         "src/Editor/Util/Manager.js",
         "src/Editor/Util/ControlPoint.js",
@@ -19,7 +25,12 @@
         "src/Editor/Util/ControlScale.js",
         "src/Editor/Util/ControlsRect.js",
         "src/Editor/Util/Object.js",
+        "src/Editor/Components/Rod/Connection.js",
+        "src/Editor/Components/Rod/Bar.js",
+        "src/Editor/Components/Rod/RodSprite.js",
+        "src/Editor/Components/Rod/Rod.js",
         "src/Editor/Nav.js",
+        "src/Editor/WorldLayer.js",
         "src/Editor/Scene.js"
 
     ]

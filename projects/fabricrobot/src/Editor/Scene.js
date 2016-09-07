@@ -1,34 +1,142 @@
 
 var EditorScene = cc.Scene.extend({
+    objects:[],
+    stopped:true,
     onEnter:function () {
         this._super();
-        var nav = new Nav(),
-            background = new cc.LayerColor(cc.color(255,255,255));
-        cc.editorManager = new Manager();
+        var background = new cc.LayerColor(cc.color(255,255,255));
 
+        this.initPhysics();
+        this.debugDraw();
         this.addChild(background);
-        this.addChild(nav);
-        this.addChild(cc.editorManager);
-        nav.init()
-        this.addTestSprite();
+        this.worldLayer = new WorldLayer(this.world);
+        //this.addTestSprite({position:cc.p(400,0),type:b2_staticBody,con1:{position: cc.p(-400,0)},con2:{position: cc.p(400,0)}});
+        this.addTestSprite({position:cc.p(300,100),type:b2_dynamicBody});
+
+
+        this.scheduleUpdate();
+        window.editor = this
     },
-    addTestSprite:function(){
-        var sprite = new Rect(new cc.Size(50,50));
-        sprite.setAnchorPoint(cc.p(0.5,0.5))
-        sprite.setPosition(200,200);
-        cc.editorManager.addChild(sprite)
+    initPhysics : function(){
+        //1. new world object
+        this.world = new b2World(new b2Vec2(0,-10));
+        this.world.SetContinuousPhysics(true);
+        var bodyDef = new b2BodyDef();
+        bodyDef.position.Set(cc.view.getDesignResolutionSize().width/PMR/2,0);
+        this.bodyGround = this.world.CreateBody(bodyDef);
+        this.groundShape = new b2PolygonShape();
+        this.groundShape.SetAsBox(cc.view.getDesignResolutionSize().width/PMR/2,10/PMR)
+        var fixDef = new b2FixtureDef();
+        fixDef.shape = this.groundShape;
+
+        this.bodyGround.CreateFixture(fixDef)
+    },
+    addTestSprite:function(options){
+        var rod = new Rod(this.world,options)
+        this.objects.push(rod)
+        this.addChild(rod.sprite);
+    },
+    update:function(dt){
+        this.world.DrawDebugData();
+        if(this.stopped) return;
+        this.world.Step(1/60,10,10);
+        this.world.ClearForces();
+        this.objects.forEach(function(o){
+            o.update(dt)
+        })
+    },
+    debugDraw:function(){
+        var debugDraw = new b2DebugDraw();
+        debugDraw.SetSprite(document.getElementById("box2d").getContext("2d"));
+        debugDraw.SetDrawScale(30);
+        debugDraw.SetFillAlpha(0.3);
+        debugDraw.SetLineThickness(1.0);
+        debugDraw.SetFlags(b2DebugDraw.e_shapeBit | b2DebugDraw.e_jointBit);
+        this.world.SetDebugDraw(debugDraw);
+    },
+    togglePhysics:function(){
+        this.stopped = !this.stopped;
     }
 
 });
-var Rect = ObjectBase.extend({
-    ctor:function(size){
-        this._super();
-        this.setContentSize(size);
-        this.draw()
-    },
-    draw:function(){
-        var dn = new cc.DrawNode();
-        this.addChild(dn);
-        dn.drawRect(cc.p(0,0), cc.p(this._contentSize.width,this._contentSize.height), cc.color("#EFEFEF"), 3, cc.color("#6D6D6D"));
+
+function init() {
+    var b2Vec2 = Box2D.Common.Math.b2Vec2;
+    var b2AABB = Box2D.Collision.b2AABB;
+    var b2BodyDef = Box2D.Dynamics.b2BodyDef;
+    var b2Body = Box2D.Dynamics.b2Body;
+    var b2FixtureDef = Box2D.Dynamics.b2FixtureDef;
+    var b2Fixture = Box2D.Dynamics.b2Fixture;
+    var b2World = Box2D.Dynamics.b2World;
+    var b2PolygonShape = Box2D.Collision.Shapes.b2PolygonShape;
+    var b2DebugDraw = Box2D.Dynamics.b2DebugDraw;
+
+    var worldScale = 30;
+
+    var world = new b2World(new b2Vec2(0, 10),true);
+
+    var canvasPosition = getElementPosition(document.getElementById("box2d"));
+
+    debugDraw();
+    window.setInterval(update,1000/60);
+
+    createBox(640,30,320,480,b2Body.b2_staticBody);
+    createBox(640,30,320,0,b2Body.b2_staticBody);
+    createBox(30,480,0,240,b2Body.b2_staticBody);
+    createBox(30,480,640,240,b2Body.b2_staticBody);
+
+    document.addEventListener("mousedown",function(e){
+        createBox(Math.random()*40+40,Math.random()*40+40,e.clientX-canvasPosition.x,e.clientY-canvasPosition.y,b2Body.b2_dynamicBody);
+    });
+
+    function createBox(width,height,pX,pY,type){
+        var bodyDef = new b2BodyDef;
+        bodyDef.type = type;
+        bodyDef.position.Set(pX/worldScale,pY/worldScale);
+        var polygonShape = new b2PolygonShape;
+        polygonShape.SetAsBox(width/2/worldScale,height/2/worldScale);
+        var fixtureDef = new b2FixtureDef;
+        fixtureDef.density = 1.0;
+        fixtureDef.friction = 0.5;
+        fixtureDef.restitution = 0.5;
+        fixtureDef.shape = polygonShape;
+        var body=world.CreateBody(bodyDef);
+        body.CreateFixture(fixtureDef);
     }
-})
+
+    function debugDraw(){
+        var debugDraw = new b2DebugDraw();
+        debugDraw.SetSprite(document.getElementById("box2d").getContext("2d"));
+        debugDraw.SetDrawScale(30.0);
+        debugDraw.SetFillAlpha(0.5);
+        debugDraw.SetLineThickness(1.0);
+        debugDraw.SetFlags(b2DebugDraw.e_shapeBit | b2DebugDraw.e_jointBit);
+        world.SetDebugDraw(debugDraw);
+    }
+
+    function update() {
+        world.Step(1/60,10,10);
+        world.DrawDebugData();
+        world.ClearForces();
+    };
+
+    //http://js-tut.aardon.de/js-tut/tutorial/position.html
+    function getElementPosition(element) {
+        var elem=element, tagname="", x=0, y=0;
+        while((typeof(elem) == "object") && (typeof(elem.tagName) != "undefined")) {
+            y += elem.offsetTop;
+            x += elem.offsetLeft;
+            tagname = elem.tagName.toUpperCase();
+            if(tagname == "BODY"){
+                elem=0;
+            }
+            if(typeof(elem) == "object"){
+                if(typeof(elem.offsetParent) == "object"){
+                    elem = elem.offsetParent;
+                }
+            }
+        }
+        return {x: x, y: y};
+    }
+
+};

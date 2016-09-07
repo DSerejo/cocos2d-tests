@@ -25,5 +25,21 @@
 <body style="padding:0; margin: 0; background: #000;">
 <script src="res/loading.js"></script>
 <canvas id="gameCanvas" width="321" height="480"></canvas>
+<div>
+    <canvas id="box2d" width="321" height="480"></canvas>
+</div>
+<div style="position: fixed;right: 0;top:0">
+    <button   onclick="toggleDebug()">Debug</button>
+    <button  onclick="togglePhysics()">Physics</button>
+</div>
+
+<script>
+    function toggleDebug(){
+        cc.debugger_.toggle()
+    }
+    function togglePhysics(){
+        window.editor.togglePhysics()
+    }
+</script>
 </body>
 </html>

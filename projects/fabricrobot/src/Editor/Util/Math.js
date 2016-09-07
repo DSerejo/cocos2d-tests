@@ -10,3 +10,7 @@ cc.angleInDegreesBetweenLineFromPoint_toPoint_toLineFromPoint_toPoint = function
     // convert radiants to degrees
     return (atanA - atanB) * 180 / Math.PI;
 }
+cc.convertPointToMeters = function(p){
+    return cc.pMult(p,1/PMR)
+}
+
