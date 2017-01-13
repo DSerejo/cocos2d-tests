@@ -29,8 +29,18 @@
         "src/Editor/Components/Rod/Bar.js",
         "src/Editor/Components/Rod/RodSprite.js",
         "src/Editor/Components/Rod/Rod.js",
+        "src/Editor/Components/Wheel/CircleSprite.js",
+        "src/Editor/Components/Wheel/Wheel.js",
+        "src/Editor/Components/Box/Box.js",
+        "src/Editor/Components/Box/BoxSprite.js",
+        "src/Editor/Components/Factory.js",
+        "src/Editor/Controls/ControlButton.js",
+        "src/Editor/Controls/Scale.js",
+        "src/Editor/Controls/Move.js",
+        "src/Editor/Controls/Rotate.js",
         "src/Editor/Nav.js",
         "src/Editor/WorldLayer.js",
+        "src/Editor/ControlLayer.js",
         "src/Editor/Scene.js"
 
     ]

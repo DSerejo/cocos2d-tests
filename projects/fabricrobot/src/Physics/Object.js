@@ -20,9 +20,15 @@ var PhysicsObject = cc.Class.extend({
         this.stateTime++;
         this.runTime++;
         if(this.sprite!=null&&this.isAlive){
-            this.sprite.setPosition(this.getPosition());
-            this.sprite.setRotation(-this.getRotation());
+            //this._setPosition(this.getPosition());
+            this._setRotation(-this.getRotation());
         }
+    },
+    _setPosition:function(p){
+        this.sprite.setPosition(p)
+    },
+    _setRotation:function(a){
+        this.sprite.setRotation(a)
     },
     getPosition:function () {
         var pos = this.body.GetPosition();
@@ -37,7 +43,7 @@ var PhysicsObject = cc.Class.extend({
     setPosition:function (p) {
         this.body.SetPosition(new b2Vec2(p.x / this.PMR, p.y / this.PMR));
         if(this.sprite!=null){
-            //this.sprite.setPosition(this.getPosition());
+            this.sprite.setPosition(this.getPosition());
         }
     },
     getRotation:function () {

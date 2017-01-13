@@ -21,7 +21,6 @@ var ControlScale = ControlPoint.extend({
         if(this.isActive){
             var dScale = this.getDeltaScale(event);
             this.scale(dScale)
-            console.log(this._getStartScale(),this.startPoint,this.center,{x:event._x,y:event._y})
             event.stopPropagation()
         }
     },

@@ -1,11 +1,12 @@
 var DebugCanvas = cc.Class.extend({
     enabled:true,
-    ctor:function(gameCanvas){
+    ctor:function(gameCanvas,editor){
         var parent = gameCanvas.parentElement,
             canvas = this.createDebugCanvas();
-        parent.appendChild(canvas);
+        parent.insertBefore(canvas,parent.childNodes[0]);
         this.positionDebugCanvas(canvas,gameCanvas);
         this.canvas = canvas;
+        this.listenEvents(editor)
         window.debuggerCanvas = this;
     },
     createDebugCanvas:function(){
@@ -23,6 +24,12 @@ var DebugCanvas = cc.Class.extend({
         canvas.height = cc.view.getDesignResolutionSize().height
         canvas.style['-webkit-transform'] = 'rotateX(180deg)'
     },
+    listenEvents: function(editor){
+        this.canvas.addEventListener('click',editor.onMouseDown.bind(editor));
+        this.canvas.addEventListener('mousemove',editor.onMouseMove.bind(editor));
+        this.canvas.addEventListener('mouseup',editor.onMouseUp.bind(editor));
+    },
+
     hide:function(){
         this.canvas.style.display = 'none';
         this.enabled = false;
@@ -37,5 +44,6 @@ var DebugCanvas = cc.Class.extend({
         else
             this.show();
     }
+
 
 })

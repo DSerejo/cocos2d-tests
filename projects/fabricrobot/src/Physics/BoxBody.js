@@ -16,4 +16,5 @@ var BoxBody = PhysicsObject.extend({
         fixDef.restitution = restitution;
         this.body.CreateFixture(fixDef);
     },
+
 })

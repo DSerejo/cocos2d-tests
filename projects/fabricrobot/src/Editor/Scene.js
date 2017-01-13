@@ -2,18 +2,23 @@
 var EditorScene = cc.Scene.extend({
     objects:[],
     stopped:true,
+    selectedObject:null,
+    mousePressed: false,
     onEnter:function () {
         this._super();
         var background = new cc.LayerColor(cc.color(255,255,255));
 
         this.initPhysics();
+        this.listenEvents();
         this.debugDraw();
-        this.addChild(background);
+        this.addChild(background,-1,EditorScene.Tags.background);
         this.worldLayer = new WorldLayer(this.world);
         //this.addTestSprite({position:cc.p(400,0),type:b2_staticBody,con1:{position: cc.p(-400,0)},con2:{position: cc.p(400,0)}});
-        this.addTestSprite({position:cc.p(300,100),type:b2_dynamicBody});
-
-
+        this.initObjects([
+            {position:cc.p(250,300),width:100,height:100,type:b2_dynamicBody,radius:10,'class':'box'},
+            {position:cc.p(300,300),width:100,height:100,type:b2_dynamicBody,radius:10,'class':'box'},
+            {position:cc.p(300,300),type:b2_dynamicBody,radius:10,'class':'wheel'},
+        ])
         this.scheduleUpdate();
         window.editor = this
     },
@@ -28,13 +33,16 @@ var EditorScene = cc.Scene.extend({
         this.groundShape.SetAsBox(cc.view.getDesignResolutionSize().width/PMR/2,10/PMR)
         var fixDef = new b2FixtureDef();
         fixDef.shape = this.groundShape;
-
         this.bodyGround.CreateFixture(fixDef)
     },
-    addTestSprite:function(options){
-        var rod = new Rod(this.world,options)
-        this.objects.push(rod)
-        this.addChild(rod.sprite);
+    initObjects:function(listOfObjects){
+        var self = this
+        listOfObjects.forEach(function(object){
+            var newObject = Factory[object.class](self.world,object)
+            self.objects.push(newObject)
+            if(newObject.sprite)
+                self.addChild(newObject.sprite);
+        })
     },
     update:function(dt){
         this.world.DrawDebugData();
@@ -56,7 +64,84 @@ var EditorScene = cc.Scene.extend({
     },
     togglePhysics:function(){
         this.stopped = !this.stopped;
-    }
+    },
+    listenEvents: function(){
+        var listener = cc.EventListener.create({
+            event: cc.EventListener.MOUSE,
+            onMouseMove: this.onMouseMove.bind(this),
+            onMouseDown: this.onMouseDown.bind(this),
+            onMouseUp: this.onMouseUp.bind(this)
+        })
+        cc.eventManager.addListener(listener, this);
+        cc.eventManager.setPriority(listener,1);
+    },
+    onMouseDown:function(event){
+        this.mousePressed = true;
+        var objects = this.getElementAtMouse(event);
+        if(objects.length){
+            if(this.controlLayer && this.controlLayer.selectedButton && this.selectedObject && this.rectContainsPoint(this.selectedObject.sprite,event)) return;
+            this.showControlLayer()
+            this.updateSelectedObject(objects)
+        }else{
+            if(!this.isControlLayerClicked(event) && !this.isRotateAction()){
+                this.hideControlLayer()
+                this.setAllObjectsToInactive()
+            }
+        }
+    },
+    isControlLayerClicked:function(event){
+        return this.controlLayer && this.rectContainsPoint(this.controlLayer,event)
+    },
+    isRotateAction:function(){
+        return this.controlLayer && this.controlLayer.selectedButton && this.controlLayer.selectedButton._name=="Rotate"
+    },
+    onMouseUp:function(event){
+        this.mousePressed = false;
+    },
+    onMouseMove:function(event){
+        if(this.mousePressed && this.controlLayer && this.controlLayer.selectedButton && !this.isControlLayerClicked(event)){
+            this.controlLayer.selectedButton.transform(event,this.selectedObject);
+        }
+    },
+    getElementAtMouse:function(event){
+        var self = this;
+        return _.filter(this.objects,function(o){
+            return o.sprite && self.rectContainsPoint(o.sprite,event) && o.getName!=EditorScene.Tags.background
+        })
+    },
+    rectContainsPoint:function(object,event){
+        return cc.rectContainsPoint(object.getBoundingBoxToWorld(),cc.p(event._x,event._y))
+    },
+    showControlLayer:function(){
+        if(!this.controlLayer){
+            this.controlLayer = new ControlLayer(); this.addChild(this.controlLayer);
+        }
+
+    },
+    hideControlLayer:function(){
+        if(this.controlLayer){
+            this.controlLayer.removeFromParent()
+            this.controlLayer = null
+        }
+    },
+    updateSelectedObject:function(objects){
+        this.selectedObject = this.findSelectedObject(objects);
+        this.reorderChild(this.selectedObject.sprite,1);
+    },
+    findSelectedObject:function(objects){
+        if(!this.selectedObject){
+            return objects[0];
+        }
+        var self = this
+        var index = _.findIndex(objects,function(o){return o==self.selectedObject})
+        if(index == -1 || index == objects.length-1) return objects[0];
+        return objects[index+1];
+    },
+    setAllObjectsToInactive:function(){
+        this.selectedObject = null
+    },
+
+
 
 });
 
@@ -140,3 +225,6 @@ function init() {
     }
 
 };
+EditorScene.Tags = {
+    background:"BACKGROUND"
+}

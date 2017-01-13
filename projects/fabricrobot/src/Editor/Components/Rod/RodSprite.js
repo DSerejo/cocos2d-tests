@@ -4,14 +4,28 @@ var RodSprite = cc.Node.extend({
     bar:null,
     ctor:function(options,parent){
         this._super();
-        this.parentBody = parent
+        this.options = options;
+        this.parentBody = parent;
+        this.create();
+        this._anchorPoint = cc.p(0.5,0.5)
+    },
+    create:function(){
         this.con1 = this.addConnection();
         this.con2 = this.addConnection();
-        this.positionConnection(this.con1,true,options['con1']);
-        this.positionConnection(this.con2,false,options['con2']);
+        this.positionConnection(this.con1,true,this.options['con1']);
+        this.positionConnection(this.con2,false,this.options['con2']);
         this.addBar();
+    },
+    recreate:function(){
+        var newPosition = this.convertToWorldSpace(cc.pMidpoint(this.con1.getPosition(),this.con2.getPosition())),
+            normal = cc.pForAngle(cc.angleInRadiansBetweenToPoints(this.con1.getPosition(),this.con2.getPosition())),
+            distance = cc.pDistance(this.con1.getPosition(),this.con2.getPosition())
 
-        this._anchorPoint = cc.p(0.5,0.5)
+        this.options['con1'] = {position:cc.pSub(cc.p(0,0),cc.pMult(normal,distance/2))}
+        this.options['con2'] = {position:cc.pAdd(cc.p(0,0),cc.pMult(normal,distance/2))}
+        this.removeAllChildren(true);
+        this.setPosition(newPosition);
+        this.create()
     },
     addConnection:function(){
         var con = new RodConnection();
@@ -25,8 +39,8 @@ var RodSprite = cc.Node.extend({
         if(conOptions){
             position = conOptions.position;
         }else{
-            var x=30 * (start?-1:1);
-            position = cc.p(x,start?-10:10);
+            var x=50 * (start?-1:1);
+            position = cc.p(x,start?-50:50);
         }
         con.setPosition(position);
     },
@@ -59,8 +73,14 @@ var RodSprite = cc.Node.extend({
         else
             return this._super();
     },
+    setPosition:function(pos){
+        this._super(pos);
+    },
     getRotation:function(){
-
+        return this.bar.getRotation()
+    },
+    setRotation:function(angle){
+        this._super(angle)
     }
 
 

@@ -1,19 +1,16 @@
-var Rod = BoxBody.extend({
+var Wheel = CircleBody.extend({
     ctor:function(world,options){
         this._super(world);
         this.options = options;
-        this.sprite = new RodSprite(options,this);
+        this.sprite = new CircleSprite(options,this);
         if(options.position)
             this.sprite.setPosition(options.position)
-        window.sprite = this.sprite
+        this.sprite.setAnchorPoint(0.5,0.5)
+        //window.circle = this.sprite
         this.addBody(options);
     },
     addBody:function(options){
-        var size = this.sprite.bar.getContentSize(),
-            angle = this.sprite.getRotation(),
-            position = this.sprite.getPosition()
-        this.setRealPositionDiff()
-        this.makeBody(size.width,size.height,options.type,1,0,1,position,-angle);
+        this.makeBody(options.radius,options.type,1,0,1,options.position,30);
     },
     setRealPositionDiff:function(){
         //this.realPosition = cc.pSub(this.sprite._position,this.sprite.getPosition());

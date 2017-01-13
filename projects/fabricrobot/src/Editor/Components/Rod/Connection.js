@@ -7,7 +7,6 @@ var RodConnection = cc.Node.extend({
         this.listenEvents()
     },
     init:function(){
-        window.testEl = this
         this.setAnchorPoint(cc.p(0.5,0.5))
     },
     draw:function(){
@@ -33,13 +32,16 @@ var RodConnection = cc.Node.extend({
         }
     },
     onMouseUp:function(event){
+        if(this.isActive)
+            this.parent.recreate()
         this.isActive = false;
+
     },
     onMouseMove:function(event){
         if(this.isActive){
             this.setPosition(this.parent.convertToNodeSpaceAR(cc.p(event._x,event._y)));
             this.parent.drawBar()
-        }
 
+        }
     },
 })
