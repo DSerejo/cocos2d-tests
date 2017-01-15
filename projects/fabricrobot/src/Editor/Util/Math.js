@@ -13,7 +13,16 @@ cc.angleInDegreesBetweenLineFromPoint_toPoint_toLineFromPoint_toPoint = function
 cc.convertPointToMeters = function(p){
     return cc.pMult(p,1/PMR)
 }
+cc.convertMetersToPoint = function(p){
+    return cc.pMult(p,PMR)
+}
 cc.angleInRadiansBetweenToPoints = function(p1,p2){
     return Math.atan2(p2.y - p1.y, p2.x - p1.x);
+}
+cc.pointFromEvent = function(event){
+    return cc.p(event._x,event._y)
+}
+cc.prevPointFromEvent = function(event){
+    return cc.p(event._prevX,event._prevY)
 }
 

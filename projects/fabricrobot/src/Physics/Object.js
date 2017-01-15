@@ -20,7 +20,7 @@ var PhysicsObject = cc.Class.extend({
         this.stateTime++;
         this.runTime++;
         if(this.sprite!=null&&this.isAlive){
-            //this._setPosition(this.getPosition());
+            this._setPosition(this.getPosition());
             this._setRotation(-this.getRotation());
         }
     },

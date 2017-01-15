@@ -33,6 +33,8 @@
         "src/Editor/Components/Wheel/Wheel.js",
         "src/Editor/Components/Box/Box.js",
         "src/Editor/Components/Box/BoxSprite.js",
+        "src/Editor/Components/Pin/Pin.js",
+        "src/Editor/Components/Pin/PinSprite.js",
         "src/Editor/Components/Factory.js",
         "src/Editor/Controls/ControlButton.js",
         "src/Editor/Controls/Scale.js",

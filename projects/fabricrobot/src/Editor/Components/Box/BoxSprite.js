@@ -3,14 +3,17 @@ var BoxSprite = cc.Node.extend({
     defaultOptions:{
         fillColor:'#EFEFEF'
     },
+    options:null,
     ctor:function(options){
         this._super()
         this.dn = new cc.DrawNode()
+        this.options =_.extend({},this.defaultOptions,options);
         this.addChild(this.dn)
-        this.draw(_.extend({},this.defaultOptions,options));
+        this.draw(this.options);
     },
     init:function(){
-        this.dn.setAnchorPoint(cc.p(0.5,0.5))
+        this.setAnchorPoint(cc.p(0.5,0.5))
+        this.setRotation(-this.options.angle)
     },
     draw:function(options){
         var width = options.width,
@@ -18,7 +21,10 @@ var BoxSprite = cc.Node.extend({
             fillColor = options.fillColor;
         this.dn.setContentSize(width,height)
         this.setContentSize(width,height)
-        this.dn.drawRect(cc.p(0,0), cc.p(width,height), cc.color(fillColor), 1, cc.color("#6D6D6D"));
+        var fillColorObj = cc.hexToColor(fillColor);
+        fillColorObj.a = 125
+        this.dn.drawRect(cc.p(0,0), cc.p(width,height), fillColorObj, 1, cc.color("#6D6D6D"));
+
     },
 
 })

@@ -8,3 +8,6 @@ Factory.box = function(world,options){
 Factory.rod = function(world,options){
     return new Rod(world,options)
 }
+Factory.pin = function(world,options){
+    return new Pin(world,options)
+}

@@ -10,32 +10,6 @@ var ScaleButtonBase = ControlButton.extend({
         }
         return cc.p(event._x-event._prevX,event._y - event._prevY)
     },
-    getScaleDirection:function(event,object){
-        var dAngle = cc.radiansToDegrees(cc.pToAngle(cc.pSub(cc.p(event._x,event._y),cc.p(event._prevX,event._prevY)))),
-            angleRelativeToCenter = cc.radiansToDegrees(cc.pToAngle(cc.pSub(cc.p(event._x,event._y),object.getPosition()))),
-            dAngleQuad = this.getQuad(dAngle),
-            relAngleQuad = this.getQuad(angleRelativeToCenter)
-
-        if(
-            (relAngleQuad==1&&dAngleQuad==3) ||
-            (relAngleQuad==2&&dAngleQuad==4) ||
-            (relAngleQuad==3&&dAngleQuad==1) ||
-            (relAngleQuad==4&&dAngleQuad==2)
-        ){
-            return -1;
-        }
-        return 1
-    },
-    curMoveDirection:function(event){
-
-    },
-    getQuad:function(angle){
-        if(angle>=0 && angle<90) return 1;
-        if(angle>=90 && angle<180) return 2;
-        if(angle>=-180 && angle<-90) return 3;
-        if(angle>=-90 && angle<0) return 4;
-
-    },
     scaleX:function(event,object,max){
         var dScale = this.getDeltaScale(event,object.sprite,max),
             newScale = object.sprite.getScaleX() + dScale.x/100,
@@ -55,41 +29,30 @@ var ScaleButtonBase = ControlButton.extend({
 })
 var ScaleXButton = ScaleButtonBase.extend({
     fillColor:"#42b9f4",
-    onActive:function(){
-        console.log('Scale x')
-    },
-    onInactive:function(){
-        console.log('Stop Scale x')
-    },
+    fileName:'ExpandH',
     transform:function(event,object){
         this.scaleX(event,object);
         object.updateBodyFromSprite && object.updateBodyFromSprite()
     }
+
+
 })
 var ScaleYButton = ScaleButtonBase.extend({
     fillColor:"#42b9f4",
-    onActive:function(){
-        console.log('Scale y')
-    },
-    onInactive:function(){
-        console.log('Stop Scale y')
-    },
+    fileName:'ExpandV',
     transform:function(event,object){
         this.scaleY(event,object);
         object.updateBodyFromSprite && object.updateBodyFromSprite()
-    }
+    },
 })
 var ScaleButton = ScaleButtonBase.extend({
     fillColor:"#42b9f4",
-    onActive:function(){
-        console.log('Scale xy')
-    },
-    onInactive:function(){
-        console.log('Stop Scale xy')
-    },
+    fileName:'Expand',
+
     transform:function(event,object){
         this.scaleX(event,object,true);
         this.scaleY(event,object,true);
         object.updateBodyFromSprite && object.updateBodyFromSprite()
-    }
+    },
+
 })

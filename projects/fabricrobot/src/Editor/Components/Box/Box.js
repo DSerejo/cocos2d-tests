@@ -5,11 +5,17 @@ var Box = BoxBody.extend({
         this.sprite = new BoxSprite(options,this);
         if(options.position)
             this.sprite.setPosition(options.position)
-        this.sprite.init()
-        this.addBody(options);
+        if(!options.delayedBodyCreation){
+            this.sprite.init();
+            this.addBody(options);
+        }
+    },
+    init:function(){
+        this.sprite.init();
+        this.addBody(this.options);
     },
     addBody:function(options){
-        this.makeBody(options.width,options.height,options.type,1,0,1,options.position,options.angle||0);
+        this.makeBody(options.width,options.height,options.type,1,0,1,options.position,options.angle||0,this);
     },
     updateBodyFromSprite:function(){
         if(!this.sprite)
@@ -33,7 +39,7 @@ var Box = BoxBody.extend({
     },
     _setRotation: function(a){
         if(this.sprite)
-            this.sprite.setRotation(a + this.realAngle)
+            this.sprite.setRotation(a)
     }
 
 })

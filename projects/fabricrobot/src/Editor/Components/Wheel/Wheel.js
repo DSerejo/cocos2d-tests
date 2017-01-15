@@ -10,7 +10,7 @@ var Wheel = CircleBody.extend({
         this.addBody(options);
     },
     addBody:function(options){
-        this.makeBody(options.radius,options.type,1,0,1,options.position,30);
+        this.makeBody(options.radius,options.type,1,0,1,options.position,30,this);
     },
     setRealPositionDiff:function(){
         //this.realPosition = cc.pSub(this.sprite._position,this.sprite.getPosition());
