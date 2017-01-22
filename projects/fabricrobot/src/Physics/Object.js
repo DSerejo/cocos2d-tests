@@ -1,4 +1,4 @@
-var PhysicsObject = cc.Class.extend({
+var PhysicsObject = BaseObject.extend({
     PMR : PMR,
 
     world:null,
@@ -9,7 +9,11 @@ var PhysicsObject = cc.Class.extend({
     stateTime: 0,
     runTime: 0,
     isAlive: true,
-
+    options:{
+        density:1,
+        restitution:0,
+        friction:1
+    },
     ctor : function(world){
         this.world = world;
     },
@@ -59,13 +63,69 @@ var PhysicsObject = cc.Class.extend({
         return this.body;
     },
     removeFromParent:function () {
-        this.world.RemoveBody(this.body);
-        this.shape = null;
+        this.removeBody();
         this.sprite.removeFromParent();
         this.sprite = null;
     },
     removeBody:function(){
-        this.world.DestroyBody(this.body);
+        if(this.body)
+            this.world.DestroyBody(this.body);
         this.shape = null;
+    },
+    isSelected:function(){
+        return this.sprite&&this.sprite.getChildByName('selected') !== null
+    },
+    select:function(){
+        this.unSelect();
+        var sprite  = new BoxSprite(_.extend({},this.sprite.getContentSize(),{fillColor:'#4286f4'}))
+        this.sprite.addChild(sprite,1,'selected')
+        this.selectedNode = sprite;
+    },
+    unSelect:function(){
+        if(this.selectedNode){
+            this.selectedNode.removeFromParent()
+        }
+        this.selectedNode = null
+    },
+    isTouched:function(p){
+        var rect = new cc.Rect(0,0,this.sprite._contentSize.width, this.sprite._contentSize.height),
+            localPoint = this.sprite.convertToNodeSpace(p)
+        return cc.rectContainsPoint(rect,localPoint);
+    },
+    recreateSprite:function(){
+        var oldSpriteConfig = this.removeSprite()
+        this.createSpriteObject()
+        if(this.options.position)
+            this.sprite.setPosition(this.options.position)
+        if(!this.options.delayedBodyCreation){
+            this.addBody(this.options);
+        }
+        if(!this.options.delayedPosition){
+            this.sprite.init();
+        }
+        if(oldSpriteConfig && oldSpriteConfig.parent){
+            oldSpriteConfig.parent.addChild(this.sprite,oldSpriteConfig.zOrder);
+            oldSpriteConfig.isSelected && this.select()
+        }
+    },
+    removeSprite:function(){
+        if(this.sprite){
+            var parent = this.sprite.parent,
+                zOrder = this.sprite.getLocalZOrder(),
+                isSelected = this.isSelected()
+            this.sprite.removeAllChildren()
+            this.sprite.removeFromParent()
+            this.sprite = null
+            return {parent:parent,zOrder:zOrder,isSelected:isSelected}
+        }
+    },
+    init:function(){
+        this.sprite.init();
+        this.addBody(this.options);
+    },
+    addX:function(){
+        cc.error('Override me');
     }
+
+
 });

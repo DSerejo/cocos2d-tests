@@ -1,4 +1,5 @@
 var ScaleButtonBase = ControlButton.extend({
+    startPoint:null,
     getDeltaScale:function(event,object,max){
         if(max){
             var curPos = cc.p(event._x,event._y),
@@ -11,12 +12,13 @@ var ScaleButtonBase = ControlButton.extend({
         return cc.p(event._x-event._prevX,event._y - event._prevY)
     },
     scaleX:function(event,object,max){
-        var dScale = this.getDeltaScale(event,object.sprite,max),
-            newScale = object.sprite.getScaleX() + dScale.x/100,
-            newWidth = object.sprite.getBoundingBoxToWorld().width/object.sprite.getScaleX() * newScale;
-        if(newWidth<=10)
-            return;
-        object.sprite.setScaleX(newScale)
+        var dScale = this.getDeltaScale(event,object.sprite,max)
+        object.setOptions({
+            width:object.addX(dScale.x),delayedBodyCreation:true,
+            radius:object.addX(dScale.x/2)
+        })
+        object.recreateSprite()
+
     },
     scaleY:function(event,object,max){
         var dScale = this.getDeltaScale(event,object.sprite,max),
@@ -25,12 +27,19 @@ var ScaleButtonBase = ControlButton.extend({
         if(newHeight<=10)
             return;
         object.sprite.setScaleY(newScale)
+    },
+    startTransformation:function(event){
+        this.startPoint = cc.pointFromEvent(event);
+    },
+    endTransformation:function(event){
+
     }
 })
 var ScaleXButton = ScaleButtonBase.extend({
     fillColor:"#42b9f4",
     fileName:'ExpandH',
     transform:function(event,object){
+
         this.scaleX(event,object);
         object.updateBodyFromSprite && object.updateBodyFromSprite()
     }

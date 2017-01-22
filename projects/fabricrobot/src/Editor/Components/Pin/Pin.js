@@ -1,11 +1,11 @@
-var Pin = cc.Node.extend({
+var Pin = BaseObject.extend({
     joint:null,
     world:null,
     options:{
         radius:5
     },
     ctor:function(world,options){
-        this._super();
+        this._super()
         this.world = world;
         this.options = _.extend({},this.options,options);
         this.sprite = new PinSprite(this.options);
@@ -35,6 +35,7 @@ var Pin = cc.Node.extend({
             bodyB = fixtures[1].GetBody(),
             jointDef = this.createJointDefForBodiesWithPivot(bodyA,bodyB,cc.convertPointToMeters(this.sprite.getPosition()))
         this.joint = this.world.CreateJoint(jointDef);
+
     },
     createJointDefForBodiesWithPivot:function(bodyA,bodyB,pivot){
         var joint_def = new b2RevoluteJointDef();
@@ -60,6 +61,11 @@ var Pin = cc.Node.extend({
             return
         var jointPosInMeters = this.joint.GetAnchorA()
         this.sprite.setPosition(cc.convertMetersToPoint(jointPosInMeters));
+    },
+    removeFromParent:function () {
+        this.removeJoint();
+        this.sprite.removeFromParent();
+        this.sprite = null;
     }
 
 

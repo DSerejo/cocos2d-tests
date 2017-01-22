@@ -1,5 +1,5 @@
 var DebugCanvas = cc.Class.extend({
-    enabled:true,
+    enabled:false,
     ctor:function(gameCanvas,editor){
         var parent = gameCanvas.parentElement,
             canvas = this.createDebugCanvas();
@@ -7,6 +7,7 @@ var DebugCanvas = cc.Class.extend({
         this.positionDebugCanvas(canvas,gameCanvas);
         this.canvas = canvas;
         this.listenEvents(editor)
+        this.hide();
         window.debuggerCanvas = this;
     },
     createDebugCanvas:function(){

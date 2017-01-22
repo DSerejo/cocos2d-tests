@@ -1,21 +1,15 @@
 var Box = BoxBody.extend({
+
     ctor:function(world,options){
         this._super(world);
-        this.options = options;
-        this.sprite = new BoxSprite(options,this);
-        if(options.position)
-            this.sprite.setPosition(options.position)
-        if(!options.delayedBodyCreation){
-            this.sprite.init();
-            this.addBody(options);
-        }
+        this.setOptions(options)
+        this.recreateSprite()
     },
-    init:function(){
-        this.sprite.init();
-        this.addBody(this.options);
+    createSpriteObject:function(){
+        this.sprite = new BoxSprite(this.options,this);
     },
     addBody:function(options){
-        this.makeBody(options.width,options.height,options.type,1,0,1,options.position,options.angle||0,this);
+        this.makeBody(options.width,options.height,options.type,options.density,options.restitution,options.friction,options.position,options.angle||0,this);
     },
     updateBodyFromSprite:function(){
         if(!this.sprite)
@@ -40,6 +34,17 @@ var Box = BoxBody.extend({
     _setRotation: function(a){
         if(this.sprite)
             this.sprite.setRotation(a)
+    },
+    updateOptions:function(){
+        this.options = _.extend({},this.options,{
+            position:this.sprite.getPosition(),
+            angle:-this.sprite.getRotation(),
+            radius:this.sprite.getContentSize().width/2
+        },this.sprite.getContentSize())
+    },
+    addX:function(dX){
+        return Math.max(10,this.options.width+dX)
     }
+
 
 })

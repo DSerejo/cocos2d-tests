@@ -1,6 +1,7 @@
 var MoveButton = ControlButton.extend({
     fillColor:"#CCCCCC",
     fileName:'Move',
+    _name:'Move',
     getDeltaPosition:function(event){
         return cc.p(event._x-event._prevX,event._y - event._prevY)
     },

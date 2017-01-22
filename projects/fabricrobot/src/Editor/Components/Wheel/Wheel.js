@@ -1,16 +1,30 @@
 var Wheel = CircleBody.extend({
+
     ctor:function(world,options){
         this._super(world);
-        this.options = options;
-        this.sprite = new CircleSprite(options,this);
-        if(options.position)
-            this.sprite.setPosition(options.position)
-        this.sprite.setAnchorPoint(0.5,0.5)
-        //window.circle = this.sprite
-        this.addBody(options);
+        this.setOptions(options)
+        this.recreateSprite()
+    },
+    createSpriteObject:function(){
+        this.sprite = new CircleSprite(this.options,this);
+    },
+    init:function(){
+        this.addBody(this.options);
     },
     addBody:function(options){
-        this.makeBody(options.radius,options.type,1,0,1,options.position,30,this);
+        this.makeBody(options.radius,options.type,options.density,options.restitution,options.friction,options.position,30,this);
+    },
+    updateBodyFromSprite:function(){
+        if(!this.sprite)
+            return;
+        this.removeBody();
+        this.updateOptions()
+        this.addBody({
+            radius:this.options.radius,
+            position:this.options.position,
+            type:this.options.type,
+            angle:-this.options.angle
+        })
     },
     setRealPositionDiff:function(){
         //this.realPosition = cc.pSub(this.sprite._position,this.sprite.getPosition());
@@ -25,7 +39,26 @@ var Wheel = CircleBody.extend({
         this.sprite.setPosition(p)
     },
     _setRotation: function(a){
-        this.sprite.setRotation(a + this.realAngle)
-    }
+        this.sprite.setRotation(a)
+    },
+    updateOptions:function(){
+        this.options = _.extend({},this.options,{
+            position:this.sprite.getPosition(),
+            angle:-this.sprite.getRotation(),
+            radius:this.sprite.getContentSize().width/2
+        },this.sprite.getContentSize())
+    },
+    addX:function(dX){
+        return Math.max(5,this.options.radius+dX)
+    },onKeyPressed:function(key){
+        switch (key){
+            case 87:
+                this.body.ApplyForce(new b2Vec2(0,-1000),this.body.GetWorldCenter())
+                break;
+            default:
+                break;
+
+        }
+    },
 
 })

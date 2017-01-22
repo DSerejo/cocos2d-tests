@@ -3693,7 +3693,7 @@ Box2D.postDefs = [];
     b2Settings.b2MixRestitution = function (restitution1, restitution2) {
         if (restitution1 === undefined) restitution1 = 0;
         if (restitution2 === undefined) restitution2 = 0;
-        return restitution1 > restitution2 ? restitution1 : restitution2;
+        return restitution1 > restitution2 ? restitution2 : restitution1;
     }
     b2Settings.b2Assert = function (a) {
         if (!a) {

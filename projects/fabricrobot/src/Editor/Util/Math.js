@@ -26,3 +26,9 @@ cc.prevPointFromEvent = function(event){
     return cc.p(event._prevX,event._prevY)
 }
 
+cc.pToSize = function(p){
+    return {
+        width: p.x,
+        height: p.y
+    }
+}

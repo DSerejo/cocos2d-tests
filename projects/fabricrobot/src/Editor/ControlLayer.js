@@ -26,6 +26,9 @@ var ControlLayer = cc.Node.extend({
             var o = button.create();
             self.addChild(o);
             self.positionButton(o,button.position(self.getContentSize(), o.getContentSize()))
+            if(button.type=='move'){
+                self.moveButton = o;
+            }
         })
     },
     positionButton:function(object,positionDef){
@@ -81,7 +84,8 @@ ControlLayer.controllers = [
         'position':function(parentSize,objectSize){return {x:70,y:parentSize.height/2-objectSize.height/2}}
     },{
         'create':function(){return new MoveButton()},
-        'position':function(parentSize,objectSize){return {x:100,y:parentSize.height/2-objectSize.height/2}}
+        'position':function(parentSize,objectSize){return {x:100,y:parentSize.height/2-objectSize.height/2}},
+        'type':'move'
     },{
         'create':function(){return new RotateButton()},
         'position':function(parentSize,objectSize){return {x:130,y:parentSize.height/2-objectSize.height/2}}

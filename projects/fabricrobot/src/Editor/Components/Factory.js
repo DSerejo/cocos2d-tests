@@ -11,3 +11,9 @@ Factory.rod = function(world,options){
 Factory.pin = function(world,options){
     return new Pin(world,options)
 }
+Factory.motor = function(world,options){
+    return new Motor(world,options)
+}
+Factory.propulsor = function(world,options){
+    return new Propulsor(world,options)
+}

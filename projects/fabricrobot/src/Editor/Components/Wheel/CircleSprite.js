@@ -11,10 +11,16 @@ var CircleSprite = cc.Node.extend({
         this.draw()
 
     },
+    init:function(){
+        this.setAnchorPoint(0.5,0.5)
+    },
     draw:function(){
         var dn = new cc.DrawNode();
         this.addChild(dn);
-        dn.drawDot(cc.p(this.radius,this.radius), this.radius,cc.color(this.circleColor));
+        var fillColorObj = cc.hexToColor(this.circleColor);
+        fillColorObj.a = 125
+        dn.drawDot(cc.p(this.radius,this.radius), this.radius,fillColorObj);
         this._contentSize = cc.size(this.radius*2,this.radius*2)
+
     }
 })
