@@ -1,8 +1,8 @@
 var PolygonBody = PhysicsObject.extend({
-    makeBody: function (verts,bodyType,density,restitution,friction,pos,angle) {
+    makeBody: function (verts,bodyType,density,restitution,friction,pos,angle,userData) {
         var bodyDef = new b2BodyDef();
         bodyDef.type = bodyType;
-        bodyDef.position.Set(pos.x/this.PMR, pos.y/this.PMR);
+        bodyDef.position.Set(pos.x/PMR, pos.y/PMR);
         bodyDef.angle = cc.degreesToRadians(angle);
         this.body = this.world.CreateBody(bodyDef);
         this.shape = new b2PolygonShape();

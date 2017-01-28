@@ -1,3 +1,6 @@
+var UPDATE_PMR = function(){
+    PMR = PMR_START*WORLD_SCALE
+}
 var b2Vec2 = Box2D.Common.Math.b2Vec2
     , b2BodyDef = Box2D.Dynamics.b2BodyDef
     , b2Body = Box2D.Dynamics.b2Body
@@ -9,6 +12,7 @@ var b2Vec2 = Box2D.Common.Math.b2Vec2
     , b2_staticBody = Box2D.Dynamics.b2Body.b2_staticBody
     , b2_dynamicBody = Box2D.Dynamics.b2Body.b2_dynamicBody
     , b2DebugDraw = Box2D.Dynamics.b2DebugDraw
+    , b2ContactListener = Box2D.Dynamics.b2ContactListener
     b2Mat22 = Box2D.Common.Math.b2Mat22,
     b2Mat33 = Box2D.Common.Math.b2Mat33,
     b2Math = Box2D.Common.Math.b2Math,
@@ -107,6 +111,10 @@ var b2Vec2 = Box2D.Common.Math.b2Vec2
     b2RevoluteJointDef = Box2D.Dynamics.Joints.b2RevoluteJointDef,
     b2WeldJoint = Box2D.Dynamics.Joints.b2WeldJoint,
     b2WeldJointDef = Box2D.Dynamics.Joints.b2WeldJointDef,
-    PMR = 30
+    PMR_START = 40,
+    WORLD_SCALE = 1,
+    PMR = PMR_START*WORLD_SCALE
+
+
 
 

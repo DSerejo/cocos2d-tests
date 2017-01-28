@@ -43,9 +43,9 @@ var Wheel = CircleBody.extend({
     },
     updateOptions:function(){
         this.options = _.extend({},this.options,{
-            position:this.sprite.getPosition(),
+            position:cc.pMult(this.sprite.getPosition(),WORLD_SCALE),
             angle:-this.sprite.getRotation(),
-            radius:this.sprite.getContentSize().width/2
+            radius:(this.sprite.getContentSize().width/2)*WORLD_SCALE
         },this.sprite.getContentSize())
     },
     addX:function(dX){

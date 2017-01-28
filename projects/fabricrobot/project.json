@@ -26,6 +26,7 @@
         "src/Editor/Util/ControlScale.js",
         "src/Editor/Util/ControlsRect.js",
         "src/Editor/Util/Object.js",
+        "src/Editor/Components/Materials.js",
         "src/Editor/Components/Rod/Connection.js",
         "src/Editor/Components/Rod/Bar.js",
         "src/Editor/Components/Rod/RodSprite.js",
@@ -46,6 +47,8 @@
         "src/Editor/Nav.js",
         "src/Editor/WorldLayer.js",
         "src/Editor/ControlLayer.js",
+        "src/Editor/NewObjectLayer.js",
+        "src/Editor/TestScenes.js",
         "src/Editor/Scene.js"
 
     ]

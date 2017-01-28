@@ -1,12 +1,19 @@
 var Box = BoxBody.extend({
 
     ctor:function(world,options){
-        this._super(world);
-        this.setOptions(options)
+        this.setOptions({material:Materials.wood()})
+        this._super(world,options);
+        this.setMaterialProperties(this.options.material);
         this.recreateSprite()
+    },
+    setMaterialProperties:function(material){
+        this.setOptions(material.fixtureOptions());
     },
     createSpriteObject:function(){
         this.sprite = new BoxSprite(this.options,this);
+    },
+    getId:function(){
+        return this.options.id
     },
     addBody:function(options){
         this.makeBody(options.width,options.height,options.type,options.density,options.restitution,options.friction,options.position,options.angle||0,this);
@@ -17,14 +24,14 @@ var Box = BoxBody.extend({
         this.removeBody();
         var originalSize = cc.pFromSize(this.sprite.getContentSize()),
             scale = cc.p(this.sprite.getScaleX(),this.sprite.getScaleY())
-        var box = cc.pCompMult(originalSize,scale);
-        this.addBody({
+        var box = cc.pCompMult(originalSize,cc.pMult(scale,WORLD_SCALE));
+        this.addBody(_.extend({},this.options,{
             width:box.x,
             height:box.y,
-            position:this.sprite.getPosition(),
+            position:cc.pMult(this.sprite.getPosition(),WORLD_SCALE),
             type:this.options.type,
             angle:-this.sprite.getRotation()
-        })
+        }))
     },
 
     _setPosition: function(p){
